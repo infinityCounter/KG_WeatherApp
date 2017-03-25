@@ -10,7 +10,7 @@ The script is able to run in perpetuity if not stopped and will send emails at 4
 
 N.B. :
 
-1. This application though efficient is not optimized, as multi-threaded has not been enabled by default to enable multi-threading and increase efficiency of the program, the PEAR exentsion pthread should be installed and configured. Subsequenty some changes in class EmailBuilder will have to be made. Further more to increase efficiency, scheduling jobs instead of the currently implemented sleep method would be optimal.
+1. This application though efficient is not optimized, as multi-threaded has not been enabled by default to enable multi-threading and increase efficiency of the program, the PEAR exentsion pthread should be installed and configured. Subsequenty some changes in class EmailBuilder will have to be made. Further more to increase efficiency, scheduling jobs instead of the currently implemented sleep method would be optimal. The above steps were not implemented as they'd require direct access to the environment on which the application is being deployed, thus the solution is left as is.
 
 2. The config/config.php file of this project contains many values that in a deployment environment should be stored as encrypted environmental variables for security purposes. However for this specific usage, these are left as plain text.
 
