@@ -10,7 +10,7 @@
 
 class SMTPMailer {
 
-    private $mail;
+    private $connection;
 
     /*
     * Class constructor, returns an instance of the object 
@@ -22,37 +22,37 @@ class SMTPMailer {
     }
 
     /**
-    * Configues class $mail property for SMTP connections based on CONFIG settings
+    * Configues class $connection property for SMTP connections based on CONFIG settings
     *
     * @param string $to
     * 
     * @return void
     */
     private function config(){
-        //Instantiates class property $mailer to new PHPMailer object from composer package
-        $this->mail = new PHPMailer;
-        //Set SMTP propert of $mail to true
-        $this->mail->isSMTP();  
-        $this->mail->SMTPAutoTLS = false;
-        $this->mail->SMTPDebug = 2;
-        $this->mail->Debugoutput = 'html'; 
+        //Instantiates class property $connection to new PHPMailer object from composer package
+        $this->connection = new PHPMailer;
+        //Set SMTP propert of $connection to true
+        $this->connection->isSMTP();  
+        $this->connection->SMTPAutoTLS = false;
+        $this->connection->SMTPDebug = 2;
+        $this->connection->Debugoutput = 'html'; 
         //Set SMTP host                       
-        $this->mail->Host = EMAIL_HOST; 
-        $this->mail->SMTPAuth = true;    
+        $this->connection->Host = EMAIL_HOST; 
+        $this->connection->SMTPAuth = true;    
         //Set credentials of SMTP connection                           
-        $this->mail->Username = EMAIL_USERNAME;                 
-        $this->mail->Password = EMAIL_PASSWORD;
+        $this->connection->Username = EMAIL_USERNAME;                 
+        $this->connection->Password = EMAIL_PASSWORD;
         //SET connection protocol, SSL or TLS
-        $this->mail->SMTPSecure = EMAIL_SMTP_SECURE;
+        $this->connection->SMTPSecure = EMAIL_SMTP_SECURE;
         //SET port according to connection protocol for host
-        $this->mail->Port = EMAIL_PORT;
-        $this->mail->setFrom(EMAIL_USERNAME, EMAIL_SENDER_NAME);
-        $this->mail->isHTML(true);
+        $this->connection->Port = EMAIL_PORT;
+        $this->connection->setFrom(EMAIL_USERNAME, EMAIL_SENDER_NAME);
+        $this->connection->isHTML(true);
         /*Options diable peer verficaion,
         * Should not be done in professional deployment
         * but done for sake of testing
         */ 
-        $this->mail->SMTPOptions = array(
+        $this->connection->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
                 'verify_peer_name' => false,
@@ -74,21 +74,21 @@ class SMTPMailer {
     * @return bool 
     */
     public function sendEmail($email){
-        $this->mail->addAddress($email->getRecipient());
+        $this->connection->addAddress($email->getRecipient());
         //Set the subject line
-        $this->mail->Subject = $email->getSubject();
+        $this->connection->Subject = $email->getSubject();
         //convert HTML into a basic plain-text alternative body
-        $this->mail->msgHTML($email->getBody());
+        $this->connection->msgHTML($email->getBody());
         //Replace the plain text body with one created manually
-        $this->mail->AltBody = $this->mail->html2text($email->getBody());
-        $res = $this->mail->send();
+        $this->connection->AltBody = $this->connection->html2text($email->getBody());
+        $res = $this->connection->send();
         //Remove all recipeints from the mail list
-        $this->mail->ClearAllRecipients();
+        $this->connection->ClearAllRecipients();
         if (!$res) {
-            echo "Mailer Error: " . $this->mail->ErrorInfo . "<br>";
+            echo "Mailer Error: " . $this->connection->ErrorInfo . "<br>";
             return false;
         } else {
-            echo "Message sent!" . $this->mail->ErrorInfo . "<br>";
+            echo "Message sent!" . $this->connection->ErrorInfo . "<br>";
             return true;
         }
     }
