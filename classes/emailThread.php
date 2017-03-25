@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Photos
+* EmailThread
 *
 * @author     EMILE KEITH <emilekeith3.0@gmail.com>
 * 
